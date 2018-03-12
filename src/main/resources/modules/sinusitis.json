@@ -112,7 +112,7 @@
       "name": "Common_Symptom",
       "distributed_transition": [
         {
-          "transition": "Telehalth_Virtual_Encounter",
+          "transition": "Telehealth_Virtual_Visit",
           "distribution": 0.2
         },
         {
@@ -421,7 +421,7 @@
       "direct_transition": "Sinusitis_Ends",
       "name": "Chronic_Sinusisitis_Ends"
     },
-    "Telehalth_Virtual_Visit": {
+    "Telehealth_Virtual_Visit": {
       "type": "Encounter",
       "encounter_class": "ambulatory",
       "reason": "Sinusitis Condition",
@@ -442,7 +442,7 @@
           "distribution": 0.8
         }
       ],
-      "name": "Telehalth_Virtual_Visit"
+      "name": "Telehealth_Virtual_Visit"
     }
   }
 }

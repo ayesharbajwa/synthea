@@ -178,10 +178,10 @@
       "distributed_transition": [
         {
           "transition": "Doctor_Visit",
-          "distribution": 0.2
+          "distribution": 0.5
         },
         {
-          "transition": "Telehealth_Virtual_Encounter",
+          "transition": "Telehealth_Virtual_Visit",
           "distribution": 0.5
         }
       ]
@@ -544,7 +544,7 @@
       "distributed_transition": [
         {
           "transition": "Doctor_Visit",
-          "distribution": 0.2
+          "distribution": 0.5
         },
         {
           "transition": "Prescribe_Antibiotics",
