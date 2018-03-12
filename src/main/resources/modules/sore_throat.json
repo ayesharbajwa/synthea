@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "Sore Throat",
   "remarks": [
     "Covers both bacterial and viral sore throat. Focuses on strep for bacterial, although gonorrhea and syphilis are also causes.",
@@ -8,12 +8,11 @@
     "http://emedicine.medscape.com/article/225362-overview"
   ],
   "states": {
-
     "Initial": {
       "type": "Initial",
-      "direct_transition": "Potential_Infection"
+      "direct_transition": "Potential_Infection",
+      "name": "Initial"
     },
-
     "Potential_Infection": {
       "type": "Delay",
       "exact": {
@@ -72,9 +71,9 @@
             }
           ]
         }
-      ]
+      ],
+      "name": "Potential_Infection"
     },
-
     "Acquire_Viral_Infection": {
       "type": "ConditionOnset",
       "target_encounter": "Doctor_Visit",
@@ -86,9 +85,9 @@
           "display": "Acute viral pharyngitis (disorder)"
         }
       ],
-      "direct_transition": "Viral_Symptom_1"
+      "direct_transition": "Viral_Symptom_1",
+      "name": "Acquire_Viral_Infection"
     },
-
     "Viral_Symptom_1": {
       "type": "Symptom",
       "symptom": "Cough",
@@ -96,9 +95,9 @@
         "low": 40,
         "high": 100
       },
-      "direct_transition": "Viral_Symptom_2"
+      "direct_transition": "Viral_Symptom_2",
+      "name": "Viral_Symptom_1"
     },
-
     "Viral_Symptom_2": {
       "type": "Symptom",
       "symptom": "Swollen Lymph Nodes",
@@ -106,9 +105,9 @@
         "low": 0,
         "high": 60
       },
-      "direct_transition": "Viral_Symptom_3"
+      "direct_transition": "Viral_Symptom_3",
+      "name": "Viral_Symptom_2"
     },
-
     "Viral_Symptom_3": {
       "type": "Symptom",
       "symptom": "Swollen Tonsils",
@@ -116,9 +115,9 @@
         "low": 0,
         "high": 60
       },
-      "direct_transition": "Symptoms_dont_resolve"
+      "direct_transition": "Symptoms_dont_resolve",
+      "name": "Viral_Symptom_3"
     },
-
     "Acquire_Bacterial_Infection": {
       "type": "ConditionOnset",
       "target_encounter": "Doctor_Visit",
@@ -130,9 +129,9 @@
           "display": "Streptococcal sore throat (disorder)"
         }
       ],
-      "direct_transition": "Bacterial_Symptom_1"
+      "direct_transition": "Bacterial_Symptom_1",
+      "name": "Acquire_Bacterial_Infection"
     },
-
     "Bacterial_Symptom_1": {
       "type": "Symptom",
       "symptom": "Cough",
@@ -142,9 +141,9 @@
       "remarks": [
         "Strep generally does not present with cough"
       ],
-      "direct_transition": "Bacterial_Symptom_2"
+      "direct_transition": "Bacterial_Symptom_2",
+      "name": "Bacterial_Symptom_1"
     },
-
     "Bacterial_Symptom_2": {
       "type": "Symptom",
       "symptom": "Swollen Lymph Nodes",
@@ -155,9 +154,9 @@
       "remarks": [
         "Strep generally presents with swollen lymph nodes"
       ],
-      "direct_transition": "Bacterial_Symptom_3"
+      "direct_transition": "Bacterial_Symptom_3",
+      "name": "Bacterial_Symptom_2"
     },
-
     "Bacterial_Symptom_3": {
       "type": "Symptom",
       "symptom": "Swollen Tonsils",
@@ -165,9 +164,9 @@
         "low": 40,
         "high": 100
       },
-      "direct_transition": "Symptoms_dont_resolve"
+      "direct_transition": "Symptoms_dont_resolve",
+      "name": "Bacterial_Symptom_3"
     },
-
     "Symptoms_dont_resolve": {
       "type": "Delay",
       "range": {
@@ -175,9 +174,18 @@
         "high": 5,
         "unit": "days"
       },
-      "direct_transition": "Doctor_Visit"
+      "name": "Symptoms_dont_resolve",
+      "distributed_transition": [
+        {
+          "transition": "Doctor_Visit",
+          "distribution": 0.2
+        },
+        {
+          "transition": "Telehealth_Virtual_Encounter",
+          "distribution": 0.5
+        }
+      ]
     },
-
     "Doctor_Visit": {
       "type": "Encounter",
       "encounter_class": "ambulatory",
@@ -209,12 +217,12 @@
         {
           "transition": "Take_Temperature_Low"
         }
-      ]
+      ],
+      "name": "Doctor_Visit"
     },
-
     "Take_Temperature_High": {
       "type": "Observation",
-      "category" : "vital-signs",
+      "category": "vital-signs",
       "range": {
         "low": 37.2,
         "high": 39.4
@@ -230,12 +238,12 @@
           "display": "Oral temperature"
         }
       ],
-      "direct_transition": "Determine_if_Bacterial"
+      "direct_transition": "Determine_if_Bacterial",
+      "name": "Take_Temperature_High"
     },
-
     "Take_Temperature_Low": {
       "type": "Observation",
-      "category" : "vital-signs",
+      "category": "vital-signs",
       "range": {
         "low": 37,
         "high": 38
@@ -251,9 +259,9 @@
           "display": "Oral temperature"
         }
       ],
-      "direct_transition": "Determine_if_Bacterial"
+      "direct_transition": "Determine_if_Bacterial",
+      "name": "Take_Temperature_Low"
     },
-
     "Determine_if_Bacterial": {
       "type": "Simple",
       "remarks": [
@@ -368,9 +376,9 @@
         {
           "transition": "End_Encounter"
         }
-      ]
+      ],
+      "name": "Determine_if_Bacterial"
     },
-
     "Prescribe_Antibiotics": {
       "type": "Simple",
       "conditional_transition": [
@@ -386,9 +394,9 @@
         {
           "transition": "Prescribe_Antibiotics_Adult"
         }
-      ]
+      ],
+      "name": "Prescribe_Antibiotics"
     },
-
     "Prescribe_Antibiotics_Child": {
       "type": "MedicationOrder",
       "target_encounter": "Doctor_Visit",
@@ -404,9 +412,9 @@
           "display": "Penicillin V Potassium 250 MG"
         }
       ],
-      "direct_transition": "End_Encounter"
+      "direct_transition": "End_Encounter",
+      "name": "Prescribe_Antibiotics_Child"
     },
-
     "Prescribe_Antibiotics_Adult": {
       "type": "MedicationOrder",
       "target_encounter": "Doctor_Visit",
@@ -419,9 +427,9 @@
           "display": "Penicillin V Potassium 500 MG"
         }
       ],
-      "direct_transition": "End_Encounter"
+      "direct_transition": "End_Encounter",
+      "name": "Prescribe_Antibiotics_Adult"
     },
-
     "Throat_Culture": {
       "type": "Procedure",
       "target_encounter": "Doctor_Visit",
@@ -453,14 +461,14 @@
         {
           "transition": "End_Encounter"
         }
-      ]
+      ],
+      "name": "Throat_Culture"
     },
-
-    "End_Encounter" : {
-      "type" : "EncounterEnd",
-      "direct_transition" : "Time_Passes"
+    "End_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Time_Passes",
+      "name": "End_Encounter"
     },
-
     "Time_Passes": {
       "type": "Delay",
       "range": {
@@ -468,36 +476,36 @@
         "high": 14,
         "unit": "days"
       },
-      "direct_transition": "Symptom_1_Ends"
+      "direct_transition": "Symptom_1_Ends",
+      "name": "Time_Passes"
     },
-
     "Symptom_1_Ends": {
       "type": "Symptom",
       "symptom": "Cough",
       "exact": {
         "quantity": 0
       },
-      "direct_transition": "Symptom_2_Ends"
+      "direct_transition": "Symptom_2_Ends",
+      "name": "Symptom_1_Ends"
     },
-
     "Symptom_2_Ends": {
       "type": "Symptom",
       "symptom": "Swollen Lymph Nodes",
       "exact": {
         "quantity": 0
       },
-      "direct_transition": "Symptom_3_Ends"
+      "direct_transition": "Symptom_3_Ends",
+      "name": "Symptom_2_Ends"
     },
-
     "Symptom_3_Ends": {
       "type": "Symptom",
       "symptom": "Swollen Tonsils",
       "exact": {
         "quantity": 0
       },
-      "direct_transition": "Condition_Resolves"
+      "direct_transition": "Condition_Resolves",
+      "name": "Symptom_3_Ends"
     },
-
     "Condition_Resolves": {
       "type": "ConditionEnd",
       "referenced_by_attribute": "Sore Throat Condition",
@@ -512,13 +520,41 @@
         {
           "transition": "Potential_Infection"
         }
-      ]
+      ],
+      "name": "Condition_Resolves"
     },
-    
     "End_Antibiotics": {
       "type": "MedicationEnd",
       "referenced_by_attribute": "Sore Throat Antibiotic",
-      "direct_transition": "Potential_Infection"
+      "direct_transition": "Potential_Infection",
+      "name": "End_Antibiotics"
+    },
+    "Telehealth_Virtual_Visit": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "Sore Throat Condition",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 185345009,
+          "display": "Encounter for symptom"
+        }
+      ],
+      "name": "Telehealth_Virtual_Visit",
+      "distributed_transition": [
+        {
+          "transition": "Doctor_Visit",
+          "distribution": 0.2
+        },
+        {
+          "transition": "Prescribe_Antibiotics",
+          "distribution": 0.2
+        },
+        {
+          "transition": "End_Encounter",
+          "distribution": 0.6
+        }
+      ]
     }
   }
 }

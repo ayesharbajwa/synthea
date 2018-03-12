@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "Urinary Tract Infections",
   "remarks": [
     "These are quite common in women but rare in men. Most of the incidence statistics I got from the NIH: ",
@@ -16,7 +16,6 @@
     "the risk for a UTI in women. For now these are not represented in this module."
   ],
   "states": {
-
     "Initial": {
       "type": "Initial",
       "remarks": [
@@ -66,9 +65,9 @@
             }
           ]
         }
-      ]
+      ],
+      "name": "Initial"
     },
-
     "Wait_For_Old_Age": {
       "type": "Guard",
       "allow": {
@@ -77,9 +76,9 @@
         "quantity": 55,
         "unit": "years"
       },
-      "direct_transition": "Wait_For_Next_UTI"
+      "direct_transition": "Wait_For_Next_UTI",
+      "name": "Wait_For_Old_Age"
     },
-
     "Delay_Until_Right_Age": {
       "type": "Delay",
       "remarks": [
@@ -90,9 +89,9 @@
         "high": 55,
         "unit": "years"
       },
-      "direct_transition": "Wait_For_Next_UTI"
+      "direct_transition": "Wait_For_Next_UTI",
+      "name": "Delay_Until_Right_Age"
     },
-
     "Wait_For_Next_UTI": {
       "type": "Delay",
       "remarks": [
@@ -108,9 +107,9 @@
         "high": 7,
         "unit": "years"
       },
-      "direct_transition": "Urinary_Tract_Infection"
+      "direct_transition": "Urinary_Tract_Infection",
+      "name": "Wait_For_Next_UTI"
     },
-
     "Urinary_Tract_Infection": {
       "type": "Simple",
       "distributed_transition": [
@@ -126,9 +125,9 @@
           "distribution": 0.01,
           "transition": "Pyelonephritis"
         }
-      ]
+      ],
+      "name": "Urinary_Tract_Infection"
     },
-
     "Urethritis": {
       "type": "ConditionOnset",
       "target_encounter": "UTI_Diagnosis",
@@ -140,9 +139,18 @@
           "display": "Escherichia coli urinary tract infection"
         }
       ],
-      "direct_transition": "UTI_Diagnosis"
+      "name": "Urethritis",
+      "distributed_transition": [
+        {
+          "transition": "UTI_Diagnosis",
+          "distribution": 0.5
+        },
+        {
+          "transition": "Telehealth_Virtual_UTI_Diagnosis",
+          "distribution": 0.5
+        }
+      ]
     },
-
     "Cystitis": {
       "type": "ConditionOnset",
       "target_encounter": "UTI_Diagnosis",
@@ -154,9 +162,18 @@
           "display": "Cystitis"
         }
       ],
-      "direct_transition": "UTI_Diagnosis"
+      "name": "Cystitis",
+      "distributed_transition": [
+        {
+          "transition": "UTI_Diagnosis",
+          "distribution": 0.5
+        },
+        {
+          "transition": "Telehealth_Virtual_UTI_Diagnosis",
+          "distribution": 0.5
+        }
+      ]
     },
-
     "Pyelonephritis": {
       "type": "ConditionOnset",
       "target_encounter": "UTI_Diagnosis",
@@ -168,9 +185,18 @@
           "display": "Pyelonephritis"
         }
       ],
-      "direct_transition": "UTI_Diagnosis"
+      "name": "Pyelonephritis",
+      "distributed_transition": [
+        {
+          "transition": "UTI_Diagnosis",
+          "distribution": 0.5
+        },
+        {
+          "transition": "Telehealth_Virtual_UTI_Diagnosis",
+          "distribution": 0.5
+        }
+      ]
     },
-
     "UTI_Diagnosis": {
       "type": "Encounter",
       "encounter_class": "ambulatory",
@@ -182,9 +208,9 @@
           "display": "Encounter for symptom"
         }
       ],
-      "direct_transition": "Prescribe_UTI_Antibiotic"
+      "direct_transition": "Prescribe_UTI_Antibiotic",
+      "name": "UTI_Diagnosis"
     },
-
     "Prescribe_UTI_Antibiotic": {
       "type": "MedicationOrder",
       "target_encounter": "UTI_Diagnosis",
@@ -199,9 +225,9 @@
           "display": "Nitrofurantoin 5 MG/ML [Furadantin]"
         }
       ],
-      "direct_transition": "Prescribe_OTC_Painkiller_For_UTIs"
+      "direct_transition": "Prescribe_OTC_Painkiller_For_UTIs",
+      "name": "Prescribe_UTI_Antibiotic"
     },
-
     "Prescribe_OTC_Painkiller_For_UTIs": {
       "type": "MedicationOrder",
       "target_encounter": "UTI_Diagnosis",
@@ -216,9 +242,9 @@
           "display": "Phenazopyridine hydrochloride 100 MG [Pyridium]"
         }
       ],
-      "direct_transition": "UTI_CarePlan"
+      "direct_transition": "UTI_CarePlan",
+      "name": "Prescribe_OTC_Painkiller_For_UTIs"
     },
-
     "UTI_CarePlan": {
       "type": "CarePlanStart",
       "target_encounter": "UTI_Diagnosis",
@@ -242,23 +268,23 @@
           "display": "Urine screening"
         }
       ],
-      "direct_transition": "End_Diagnosis_Encounter"
+      "direct_transition": "End_Diagnosis_Encounter",
+      "name": "UTI_CarePlan"
     },
-
-    "End_Diagnosis_Encounter" : {
-      "type" : "EncounterEnd",
-      "direct_transition" : "Take_Antibiotics"
+    "End_Diagnosis_Encounter": {
+      "type": "EncounterEnd",
+      "direct_transition": "Take_Antibiotics",
+      "name": "End_Diagnosis_Encounter"
     },
-
     "Take_Antibiotics": {
       "type": "Delay",
       "exact": {
         "quantity": 7,
         "unit": "days"
       },
-      "direct_transition": "End_First_Round_Of_Antibiotics"
+      "direct_transition": "End_First_Round_Of_Antibiotics",
+      "name": "Take_Antibiotics"
     },
-
     "End_First_Round_Of_Antibiotics": {
       "type": "MedicationEnd",
       "medication_order": "Prescribe_UTI_Antibiotic",
@@ -271,9 +297,9 @@
           "distribution": 0.85,
           "transition": "End_Urinary_Tract_Infection"
         }
-      ]
+      ],
+      "name": "End_First_Round_Of_Antibiotics"
     },
-
     "Followup_Encounter": {
       "type": "Encounter",
       "encounter_class": "ambulatory",
@@ -285,9 +311,9 @@
           "display": "Encounter for symptom"
         }
       ],
-      "direct_transition": "Prescribe_Second_Round_Of_Antibiotics"
+      "direct_transition": "Prescribe_Second_Round_Of_Antibiotics",
+      "name": "Followup_Encounter"
     },
-
     "Prescribe_Second_Round_Of_Antibiotics": {
       "type": "MedicationOrder",
       "target_encounter": "Followup_Encounter",
@@ -302,47 +328,47 @@
           "display": "NITROFURANTOIN, MACROCRYSTALS 50 MG [Macrodantin]"
         }
       ],
-      "direct_transition": "End_Followup"
+      "direct_transition": "End_Followup",
+      "name": "Prescribe_Second_Round_Of_Antibiotics"
     },
-
-    "End_Followup" : {
-      "type" : "EncounterEnd",
-      "direct_transition": "Take_More_Antibiotics"
+    "End_Followup": {
+      "type": "EncounterEnd",
+      "direct_transition": "Take_More_Antibiotics",
+      "name": "End_Followup"
     },
-
     "Take_More_Antibiotics": {
       "type": "Delay",
       "exact": {
         "quantity": 7,
         "unit": "days"
       },
-      "direct_transition": "End_Second_Round_Of_Antibiotics"
+      "direct_transition": "End_Second_Round_Of_Antibiotics",
+      "name": "Take_More_Antibiotics"
     },
-
     "End_Second_Round_Of_Antibiotics": {
       "type": "MedicationEnd",
       "medication_order": "Prescribe_Second_Round_Of_Antibiotics",
-      "direct_transition": "End_Urinary_Tract_Infection"
+      "direct_transition": "End_Urinary_Tract_Infection",
+      "name": "End_Second_Round_Of_Antibiotics"
     },
-
     "End_Urinary_Tract_Infection": {
       "type": "ConditionEnd",
       "referenced_by_attribute": "uti",
-      "direct_transition": "End_OTC_Painkiller"
+      "direct_transition": "End_OTC_Painkiller",
+      "name": "End_Urinary_Tract_Infection"
     },
-
     "End_OTC_Painkiller": {
       "type": "MedicationEnd",
       "medication_order": "Prescribe_OTC_Painkiller_For_UTIs",
-      "direct_transition": "End_UTI_CarePlan"
+      "direct_transition": "End_UTI_CarePlan",
+      "name": "End_OTC_Painkiller"
     },
-
     "End_UTI_CarePlan": {
       "type": "CarePlanEnd",
       "careplan": "UTI_CarePlan",
-      "direct_transition": "Get_Additional_UTIs"
+      "direct_transition": "Get_Additional_UTIs",
+      "name": "End_UTI_CarePlan"
     },
-
     "Get_Additional_UTIs": {
       "type": "Simple",
       "distributed_transition": [
@@ -365,9 +391,9 @@
           "distribution": 0.752,
           "transition": "Terminal"
         }
-      ]
+      ],
+      "name": "Get_Additional_UTIs"
     },
-
     "Recurrent_Urinary_Tract_Infections": {
       "type": "ConditionOnset",
       "target_encounter": "UTI_Diagnosis",
@@ -378,9 +404,9 @@
           "display": "Recurrent urinary tract infection"
         }
       ],
-      "direct_transition": "Wait_For_Recurring_UTI"
+      "direct_transition": "Wait_For_Recurring_UTI",
+      "name": "Recurrent_Urinary_Tract_Infections"
     },
-
     "Wait_For_Recurring_UTI": {
       "type": "Delay",
       "range": {
@@ -388,11 +414,26 @@
         "high": 6,
         "unit": "weeks"
       },
-      "direct_transition": "Urinary_Tract_Infection"
+      "direct_transition": "Urinary_Tract_Infection",
+      "name": "Wait_For_Recurring_UTI"
     },
-    
     "Terminal": {
-      "type": "Terminal"
+      "type": "Terminal",
+      "name": "Terminal"
+    },
+    "Telehealth_Virtual_UTI_Diagnosis": {
+      "type": "Encounter",
+      "encounter_class": "ambulatory",
+      "reason": "",
+      "codes": [
+        {
+          "system": "SNOMED-CT",
+          "code": 185345009,
+          "display": "SNOMED Code"
+        }
+      ],
+      "direct_transition": "Prescribe_UTI_Antibiotic",
+      "name": "Telehealth_Virtual_UTI_Diagnosis"
     }
   }
 }
