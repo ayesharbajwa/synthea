@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "Sore Throat",
   "remarks": [
     "Covers both bacterial and viral sore throat. Focuses on strep for bacterial, although gonorrhea and syphilis are also causes.",
@@ -10,8 +10,7 @@
   "states": {
     "Initial": {
       "type": "Initial",
-      "direct_transition": "Potential_Infection",
-      "name": "Initial"
+      "direct_transition": "Potential_Infection"
     },
     "Potential_Infection": {
       "type": "Delay",
@@ -71,8 +70,7 @@
             }
           ]
         }
-      ],
-      "name": "Potential_Infection"
+      ]
     },
     "Acquire_Viral_Infection": {
       "type": "ConditionOnset",
@@ -85,8 +83,7 @@
           "display": "Acute viral pharyngitis (disorder)"
         }
       ],
-      "direct_transition": "Viral_Symptom_1",
-      "name": "Acquire_Viral_Infection"
+      "direct_transition": "Viral_Symptom_1"
     },
     "Viral_Symptom_1": {
       "type": "Symptom",
@@ -95,8 +92,7 @@
         "low": 40,
         "high": 100
       },
-      "direct_transition": "Viral_Symptom_2",
-      "name": "Viral_Symptom_1"
+      "direct_transition": "Viral_Symptom_2"
     },
     "Viral_Symptom_2": {
       "type": "Symptom",
@@ -105,8 +101,7 @@
         "low": 0,
         "high": 60
       },
-      "direct_transition": "Viral_Symptom_3",
-      "name": "Viral_Symptom_2"
+      "direct_transition": "Viral_Symptom_3"
     },
     "Viral_Symptom_3": {
       "type": "Symptom",
@@ -115,8 +110,7 @@
         "low": 0,
         "high": 60
       },
-      "direct_transition": "Symptoms_dont_resolve",
-      "name": "Viral_Symptom_3"
+      "direct_transition": "Symptoms_dont_resolve"
     },
     "Acquire_Bacterial_Infection": {
       "type": "ConditionOnset",
@@ -129,8 +123,7 @@
           "display": "Streptococcal sore throat (disorder)"
         }
       ],
-      "direct_transition": "Bacterial_Symptom_1",
-      "name": "Acquire_Bacterial_Infection"
+      "direct_transition": "Bacterial_Symptom_1"
     },
     "Bacterial_Symptom_1": {
       "type": "Symptom",
@@ -141,8 +134,7 @@
       "remarks": [
         "Strep generally does not present with cough"
       ],
-      "direct_transition": "Bacterial_Symptom_2",
-      "name": "Bacterial_Symptom_1"
+      "direct_transition": "Bacterial_Symptom_2"
     },
     "Bacterial_Symptom_2": {
       "type": "Symptom",
@@ -154,8 +146,7 @@
       "remarks": [
         "Strep generally presents with swollen lymph nodes"
       ],
-      "direct_transition": "Bacterial_Symptom_3",
-      "name": "Bacterial_Symptom_2"
+      "direct_transition": "Bacterial_Symptom_3"
     },
     "Bacterial_Symptom_3": {
       "type": "Symptom",
@@ -164,8 +155,7 @@
         "low": 40,
         "high": 100
       },
-      "direct_transition": "Symptoms_dont_resolve",
-      "name": "Bacterial_Symptom_3"
+      "direct_transition": "Symptoms_dont_resolve"
     },
     "Symptoms_dont_resolve": {
       "type": "Delay",
@@ -174,15 +164,14 @@
         "high": 5,
         "unit": "days"
       },
-      "name": "Symptoms_dont_resolve",
       "distributed_transition": [
         {
-          "transition": "Doctor_Visit",
-          "distribution": 0.5
+          "transition": "Wait_to_see_Dr",
+          "distribution": 0.8
         },
         {
           "transition": "Telehealth_Virtual_Visit",
-          "distribution": 0.5
+          "distribution": 0.2
         }
       ]
     },
@@ -217,8 +206,7 @@
         {
           "transition": "Take_Temperature_Low"
         }
-      ],
-      "name": "Doctor_Visit"
+      ]
     },
     "Take_Temperature_High": {
       "type": "Observation",
@@ -238,8 +226,7 @@
           "display": "Oral temperature"
         }
       ],
-      "direct_transition": "Determine_if_Bacterial",
-      "name": "Take_Temperature_High"
+      "direct_transition": "Determine_if_Bacterial"
     },
     "Take_Temperature_Low": {
       "type": "Observation",
@@ -259,8 +246,7 @@
           "display": "Oral temperature"
         }
       ],
-      "direct_transition": "Determine_if_Bacterial",
-      "name": "Take_Temperature_Low"
+      "direct_transition": "Determine_if_Bacterial"
     },
     "Determine_if_Bacterial": {
       "type": "Simple",
@@ -376,8 +362,7 @@
         {
           "transition": "End_Encounter"
         }
-      ],
-      "name": "Determine_if_Bacterial"
+      ]
     },
     "Prescribe_Antibiotics": {
       "type": "Simple",
@@ -394,8 +379,7 @@
         {
           "transition": "Prescribe_Antibiotics_Adult"
         }
-      ],
-      "name": "Prescribe_Antibiotics"
+      ]
     },
     "Prescribe_Antibiotics_Child": {
       "type": "MedicationOrder",
@@ -412,8 +396,7 @@
           "display": "Penicillin V Potassium 250 MG"
         }
       ],
-      "direct_transition": "End_Encounter",
-      "name": "Prescribe_Antibiotics_Child"
+      "direct_transition": "End_Encounter"
     },
     "Prescribe_Antibiotics_Adult": {
       "type": "MedicationOrder",
@@ -427,8 +410,7 @@
           "display": "Penicillin V Potassium 500 MG"
         }
       ],
-      "direct_transition": "End_Encounter",
-      "name": "Prescribe_Antibiotics_Adult"
+      "direct_transition": "End_Encounter"
     },
     "Throat_Culture": {
       "type": "Procedure",
@@ -461,13 +443,11 @@
         {
           "transition": "End_Encounter"
         }
-      ],
-      "name": "Throat_Culture"
+      ]
     },
     "End_Encounter": {
       "type": "EncounterEnd",
-      "direct_transition": "Time_Passes",
-      "name": "End_Encounter"
+      "direct_transition": "Time_Passes"
     },
     "Time_Passes": {
       "type": "Delay",
@@ -476,8 +456,7 @@
         "high": 14,
         "unit": "days"
       },
-      "direct_transition": "Symptom_1_Ends",
-      "name": "Time_Passes"
+      "direct_transition": "Symptom_1_Ends"
     },
     "Symptom_1_Ends": {
       "type": "Symptom",
@@ -485,8 +464,7 @@
       "exact": {
         "quantity": 0
       },
-      "direct_transition": "Symptom_2_Ends",
-      "name": "Symptom_1_Ends"
+      "direct_transition": "Symptom_2_Ends"
     },
     "Symptom_2_Ends": {
       "type": "Symptom",
@@ -494,8 +472,7 @@
       "exact": {
         "quantity": 0
       },
-      "direct_transition": "Symptom_3_Ends",
-      "name": "Symptom_2_Ends"
+      "direct_transition": "Symptom_3_Ends"
     },
     "Symptom_3_Ends": {
       "type": "Symptom",
@@ -503,8 +480,7 @@
       "exact": {
         "quantity": 0
       },
-      "direct_transition": "Condition_Resolves",
-      "name": "Symptom_3_Ends"
+      "direct_transition": "Condition_Resolves"
     },
     "Condition_Resolves": {
       "type": "ConditionEnd",
@@ -520,14 +496,12 @@
         {
           "transition": "Potential_Infection"
         }
-      ],
-      "name": "Condition_Resolves"
+      ]
     },
     "End_Antibiotics": {
       "type": "MedicationEnd",
       "referenced_by_attribute": "Sore Throat Antibiotic",
-      "direct_transition": "Potential_Infection",
-      "name": "End_Antibiotics"
+      "direct_transition": "Potential_Infection"
     },
     "Telehealth_Virtual_Visit": {
       "type": "Encounter",
@@ -536,25 +510,59 @@
       "codes": [
         {
           "system": "SNOMED-CT",
-          "code": 185345009,
+          "code": 386472008,
           "display": "Encounter for symptom"
         }
       ],
-      "name": "Telehealth_Virtual_Visit",
       "distributed_transition": [
         {
           "transition": "Doctor_Visit",
-          "distribution": 0.5
-        },
-        {
-          "transition": "Prescribe_Antibiotics",
           "distribution": 0.2
         },
         {
+          "transition": "Prescribe_Antibiotics",
+          "distribution": 0.05
+        },
+        {
           "transition": "End_Encounter",
-          "distribution": 0.6
+          "distribution": 0.5
+        },
+        {
+          "transition": "Throat_Culture",
+          "distribution": 0.2
+        },
+        {
+          "transition": "Wait_before_antibiotic",
+          "distribution": 0.05
         }
       ]
+    },
+    "Wait_to_see_Dr": {
+      "type": "Delay",
+      "direct_transition": "Doctor_Visit",
+      "range": {
+        "low": 5,
+        "high": 10,
+        "unit": "days"
+      }
+    },
+    "Wait_before_antibiotic": {
+      "type": "Delay",
+      "distributed_transition": [
+        {
+          "transition": "Prescribe_Antibiotics",
+          "distribution": 0.5
+        },
+        {
+          "transition": "End_Encounter",
+          "distribution": 0.5
+        }
+      ],
+      "range": {
+        "low": 3,
+        "high": 5,
+        "unit": "days"
+      }
     }
   }
 }
